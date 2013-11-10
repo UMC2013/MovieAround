@@ -4,6 +4,10 @@
     <string name="app_name">MovieAround</string>
     <string name="action_settings">Settings</string>
     <string name="hello_world">Hello world!</string>
-    <string name="button_add">Add</string>
-    
+    <string name="button_add_genre">Add Genre</string>
+    <string name="menu_add_genre">Add Genres</string>
+    <string name="title_activity_genres">Genres</string>
+	<string name="text_no_movies">No novies found, access the menu do select your preferred movie genres.</string>
+	<string name="text_location">Current Location</string>
+	<string name="empty_string"></string>
 </resources>

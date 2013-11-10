@@ -1,5 +1,9 @@
 package com.umc.moviearound;
 
+import java.util.List;
+
+import org.json.JSONException;
+
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.GooglePlayServicesClient;
 import com.google.android.gms.common.GooglePlayServicesUtil;
@@ -8,20 +12,28 @@ import com.google.android.gms.location.LocationListener;
 import com.google.android.gms.location.LocationRequest;
 
 import android.location.Location;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.os.Bundle;
 import android.app.Activity;
 import android.app.Dialog;
+import android.content.Context;
 import android.content.Intent;
 import android.content.IntentSender;
 import android.support.v4.app.DialogFragment;
 import android.support.v4.app.FragmentActivity;
 import android.util.Log;
 import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
+import android.widget.ArrayAdapter;
+import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
 public class MainActivity extends FragmentActivity implements
+	AsyncTaskCompleteListener<String>, 
 	LocationListener,
 	GooglePlayServicesClient.ConnectionCallbacks,
 	GooglePlayServicesClient.OnConnectionFailedListener {
@@ -37,6 +49,9 @@ public class MainActivity extends FragmentActivity implements
 	private LocationRequest mLocationRequest;
 	private LocationClient mLocationClient;
 	
+	private TextView textViewMessage;
+	private ListView listViewTheaters;
+	
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -47,9 +62,38 @@ public class MainActivity extends FragmentActivity implements
         mLocationRequest.setPriority(LocationRequest.PRIORITY_HIGH_ACCURACY);
         mLocationRequest.setFastestInterval(1000);
         
-        mLocationClient = new LocationClient(this, this, this);        
+        //todo: conseguir pegar a localização
+        mLocationClient = new LocationClient(this, this, this);
+        
+        textViewMessage = (TextView)findViewById(R.id.textViewNoMovies);
+        listViewTheaters = (ListView)findViewById(R.id.listViewTheaters);
+        
+        ConnectivityManager connMgr = (ConnectivityManager) 
+                getSystemService(Context.CONNECTIVITY_SERVICE);
+        NetworkInfo networkInfo = connMgr.getActiveNetworkInfo();
+        if (networkInfo != null && networkInfo.isConnected()) {
+        	//todo: pegar a lista de generos salvos e enviar como parâmetro junto com a localização
+            new GetTask(this).execute("theaters");
+        }
         
     }
+    
+    @Override
+	public void onTaskComplete(String result) {
+    	List<Theater> theaters;
+		try {
+			theaters = Utils.DeserializeTheaterList(result);
+			if (theaters.size() > 0) {
+				ArrayAdapter listArrayAdapter = new ArrayAdapter(this, android.R.layout.simple_spinner_item, theaters);
+				listViewTheaters.setAdapter(listArrayAdapter);				
+			}
+			else
+				textViewMessage.setText(R.string.text_no_movies);
+		} catch (JSONException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	}
     
     private void startPeriodicUpdates() {
 
@@ -87,8 +131,25 @@ public class MainActivity extends FragmentActivity implements
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.main, menu);
+    	MenuInflater inflater = getMenuInflater();
+        inflater.inflate(R.menu.main, menu);
         return true;
+    }
+    
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+    	switch (item.getItemId()) {
+    	 case R.id.addGenre:
+             showGenres();
+             return true;
+    	default:
+            return super.onOptionsItemSelected(item);
+    	}
+    }
+    
+    public void showGenres() {
+    	Intent intent = new Intent(this, GenresActivity.class);
+    	startActivity(intent);
     }
     
     // Define a DialogFragment that displays the error dialog
@@ -231,5 +292,8 @@ public class MainActivity extends FragmentActivity implements
             //mLatLng.setText(LocationUtils.getLatLng(this, currentLocation));
         }
     }
+
+	
+	
     
 }
