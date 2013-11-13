@@ -1,4 +1,4 @@
-package com.umc.moviearound;
+package com.umc.moviearound.Model;
 
 public class Genre {
 	private int id;

@@ -16,20 +16,24 @@
         android:layout_alignParentTop="true"
         android:text="@string/empty_string" />
 
-    <ListView
-        android:id="@+id/listViewTheaters"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_alignLeft="@+id/textViewLocation"
-        android:layout_below="@+id/textViewNoMovies" >
-    </ListView>
     <TextView
         android:id="@+id/textViewLocation"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignLeft="@+id/textViewNoMovies"
-        android:layout_below="@+id/listViewTheaters"
         android:layout_marginTop="10dp"
         android:text="@string/text_location" />
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/textViewLocation"
+        android:orientation="vertical" >
+
+        <ListView
+            android:id="@+id/listViewTheaters"
+            android:layout_width="match_parent"
+            android:layout_height="350dp" >
+        </ListView>
+    </LinearLayout>
 
 </RelativeLayout>

@@ -1,4 +1,4 @@
-package com.umc.moviearound;
+package com.umc.moviearound.Activity;
 
 import java.util.List;
 
@@ -10,6 +10,11 @@ import com.google.android.gms.common.GooglePlayServicesUtil;
 import com.google.android.gms.location.LocationClient;
 import com.google.android.gms.location.LocationListener;
 import com.google.android.gms.location.LocationRequest;
+import com.umc.moviearound.AsyncTaskCompleteListener;
+import com.umc.moviearound.GetTask;
+import com.umc.moviearound.R;
+import com.umc.moviearound.Utils;
+import com.umc.moviearound.Model.Theater;
 
 import android.location.Location;
 import android.net.ConnectivityManager;
@@ -43,8 +48,7 @@ public class MainActivity extends FragmentActivity implements
      * Define a request code to send to Google Play services
      * This code is returned in Activity.onActivityResult
      */
-	private final static int
-		CONNECTION_FAILURE_RESOLUTION_REQUEST = 9000;
+	private final static int CONNECTION_FAILURE_RESOLUTION_REQUEST = 9000;
 	
 	private LocationRequest mLocationRequest;
 	private LocationClient mLocationClient;
@@ -62,14 +66,12 @@ public class MainActivity extends FragmentActivity implements
         mLocationRequest.setPriority(LocationRequest.PRIORITY_HIGH_ACCURACY);
         mLocationRequest.setFastestInterval(1000);
         
-        //todo: conseguir pegar a localização
         mLocationClient = new LocationClient(this, this, this);
         
-        textViewMessage = (TextView)findViewById(R.id.textViewNoMovies);
-        listViewTheaters = (ListView)findViewById(R.id.listViewTheaters);
+        textViewMessage = (TextView) findViewById(R.id.textViewNoMovies);
+        listViewTheaters = (ListView) findViewById(R.id.listViewTheaters);
         
-        ConnectivityManager connMgr = (ConnectivityManager) 
-                getSystemService(Context.CONNECTIVITY_SERVICE);
+        ConnectivityManager connMgr = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
         NetworkInfo networkInfo = connMgr.getActiveNetworkInfo();
         if (networkInfo != null && networkInfo.isConnected()) {
         	//todo: pegar a lista de generos salvos e enviar como parâmetro junto com a localização
@@ -272,8 +274,8 @@ public class MainActivity extends FragmentActivity implements
 
 	@Override
 	public void onLocationChanged(Location location) {
-		TextView textLocation = (TextView)findViewById(R.id.textViewLocation);
-    	textLocation.setText("Latitude: " + String.valueOf(location.getLatitude() + " Longitude: " + location.getLongitude()));
+		TextView textLocation = (TextView) findViewById(R.id.textViewLocation);
+    	textLocation.setText("Você está em: \nLatitude: " + String.valueOf(location.getLatitude() + ", longitude: " + location.getLongitude()));
 		
 	}
     
@@ -291,8 +293,4 @@ public class MainActivity extends FragmentActivity implements
             //mLatLng.setText(LocationUtils.getLatLng(this, currentLocation));
         }
     }
-
-	
-	
-    
 }

@@ -7,6 +7,9 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import com.umc.moviearound.Model.Genre;
+import com.umc.moviearound.Model.Theater;
+
 public class Utils {
 	
 	public static Genre DeserializeGenre(JSONObject jsonObject) throws JSONException {
