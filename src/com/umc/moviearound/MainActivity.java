@@ -272,9 +272,8 @@ public class MainActivity extends FragmentActivity implements
 
 	@Override
 	public void onLocationChanged(Location location) {
-		
 		TextView textLocation = (TextView)findViewById(R.id.textViewLocation);
-    	textLocation.setText(String.valueOf(location.getLatitude()));
+    	textLocation.setText("Latitude: " + String.valueOf(location.getLatitude() + " Longitude: " + location.getLongitude()));
 		
 	}
     
