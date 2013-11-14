@@ -1,6 +1,7 @@
 package com.umc.moviearound.Activity;
 
 import java.util.List;
+import java.util.Set;
 
 import org.json.JSONException;
 
@@ -21,10 +22,13 @@ import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.os.Bundle;
 import android.app.Activity;
+import android.app.AlertDialog;
 import android.app.Dialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.IntentSender;
+import android.content.SharedPreferences;
 import android.support.v4.app.DialogFragment;
 import android.support.v4.app.FragmentActivity;
 import android.util.Log;
@@ -60,6 +64,24 @@ public class MainActivity extends FragmentActivity implements
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        
+        if (loadGenre() == null) {
+        	AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        	builder.setMessage("We've noticed that you haven't selected your favorite genres yet. \n\nPlease, click on the button below to select some.")
+        		   .setTitle("Welcome!")
+        		   .setCancelable(false)
+        		   .setPositiveButton("Select", new DialogInterface.OnClickListener() {
+					
+					@Override
+					public void onClick(DialogInterface arg0, int arg1) {
+						showGenresActivity();					
+					}
+				});
+        	
+        	AlertDialog dialog = builder.create();
+        	dialog.show();
+        }
+        
         
         mLocationRequest = LocationRequest.create();
         mLocationRequest.setInterval(5000);
@@ -142,14 +164,14 @@ public class MainActivity extends FragmentActivity implements
     public boolean onOptionsItemSelected(MenuItem item) {
     	switch (item.getItemId()) {
     	 case R.id.addGenre:
-             showGenres();
+    		 showGenresActivity();
              return true;
     	default:
             return super.onOptionsItemSelected(item);
     	}
     }
     
-    public void showGenres() {
+    public void showGenresActivity() {
     	Intent intent = new Intent(this, GenresActivity.class);
     	startActivity(intent);
     }
@@ -275,7 +297,7 @@ public class MainActivity extends FragmentActivity implements
 	@Override
 	public void onLocationChanged(Location location) {
 		TextView textLocation = (TextView) findViewById(R.id.textViewLocation);
-    	textLocation.setText("Você está em: \nLatitude: " + String.valueOf(location.getLatitude() + ", longitude: " + location.getLongitude()));
+    	textLocation.setText("Você está em: " + String.valueOf(location.getLatitude() + ", " + location.getLongitude()));
 		
 	}
     
@@ -293,4 +315,15 @@ public class MainActivity extends FragmentActivity implements
             //mLatLng.setText(LocationUtils.getLatLng(this, currentLocation));
         }
     }
+	
+	public Set<String> loadGenre() {
+		SharedPreferences prefs = getSharedPreferences("preferences", Context.MODE_PRIVATE);
+		Set<String> generos = prefs.getStringSet("generos", null);
+		
+		if(generos != null)
+			return generos;
+		else
+			return null;
+	}
+	
 }

@@ -101,9 +101,6 @@ public class GenresActivity extends Activity implements
 
 	}
 	
-	
-	
-	
 	public void addGenre(View view) {
 		SharedPreferences prefs = getSharedPreferences("preferences", Context.MODE_PRIVATE);
 		Editor ed = prefs.edit();
@@ -123,5 +120,13 @@ public class GenresActivity extends Activity implements
 		Set<String> generos = prefs.getStringSet("generos", new HashSet<String>());
 		
 		return generos;
+	}
+	
+	public void cleanGenresList(View view) {
+		SharedPreferences prefs = getSharedPreferences("preferences", Context.MODE_PRIVATE);
+		Editor ed = prefs.edit();
+		
+		ed.clear();
+		ed.commit();
 	}
 }

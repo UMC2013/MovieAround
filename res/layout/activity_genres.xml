@@ -10,7 +10,7 @@
 
     <Spinner
         android:id="@+id/spinnerGenres"
-        android:layout_width="wrap_content"
+        android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         android:layout_alignParentLeft="true"
         android:layout_alignParentTop="true" />
@@ -32,5 +32,15 @@
         android:layout_below="@+id/spinnerGenres"
         android:onClick="addGenre"
         android:text="@string/button_add_genre" />
+
+    <Button
+        android:id="@+id/buttonCleanList"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignBaseline="@+id/buttonAddGenre"
+        android:layout_alignBottom="@+id/buttonAddGenre"
+        android:layout_toRightOf="@+id/buttonAddGenre"
+        android:onClick="cleanGenresList"
+        android:text="@string/button_clean_list" />
 
 </RelativeLayout>
