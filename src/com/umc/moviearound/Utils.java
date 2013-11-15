@@ -12,11 +12,16 @@ import com.umc.moviearound.Model.Theater;
 
 public class Utils {
 	
-	public static Genre DeserializeGenre(JSONObject jsonObject) throws JSONException {
+	public static Genre DeserializeGenre(JSONObject jsonObject) {
 		Genre genre = new Genre();
 		
+		try {
 		genre.setId(jsonObject.getInt("GenreId"));
 		genre.setName(jsonObject.getString("Name"));
+		}
+		catch (JSONException e) {
+			return null;
+		}
 		
 		return genre;
 	}
@@ -27,7 +32,9 @@ public class Utils {
 		if (jsonString.startsWith("[") || jsonString.startsWith("{")) {
 			JSONArray jsonArray = new JSONArray(jsonString.toString());
 			for (int i = 0; i < jsonArray.length(); i++) {
-				genres.add(DeserializeGenre(jsonArray.getJSONObject(i)));
+				Genre genre = DeserializeGenre(jsonArray.getJSONObject(i));
+				if (genre != null)
+					genres.add(genre);
 			}
 		}
 		
