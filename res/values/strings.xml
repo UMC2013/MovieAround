@@ -8,8 +8,10 @@
     <string name="menu_add_genre">Select Genres</string>
     <string name="title_activity_genres">Genres</string>
     <string name="text_no_movies">No novies found, access the menu do select your preferred movie genres.</string>
-    <string name="text_location">Current Location</string>
+    <string name="text_location">Searching for your location...</string>
     <string name="empty_string"></string>
     <string name="title_activity_splash_screen">SplashScreenActivity</string>
+    <string name="title_activity_movie_details">MovieDetailsActivity</string>
+    <string name="hello_world">Hello world!</string>
 
 </resources>

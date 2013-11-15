@@ -51,16 +51,15 @@ public class GenresActivity extends Activity implements
 		textView.setText("Loading...");
 		
 		//todo: carregar a lista de genêros já salvos localmente do usuário
-		
-        ConnectivityManager connMgr = (ConnectivityManager) 
-            getSystemService(Context.CONNECTIVITY_SERVICE);
-        NetworkInfo networkInfo = connMgr.getActiveNetworkInfo();
-        if (networkInfo != null && networkInfo.isConnected()) {
-            new GetTask(this).execute("genres");
-        } else {
-            textView.setText("No network connection available.");
-        }
-        
+
+		ConnectivityManager connMgr = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
+		NetworkInfo networkInfo = connMgr.getActiveNetworkInfo();
+		if (networkInfo != null && networkInfo.isConnected()) {
+			new GetTask(this).execute("genres");
+		} else {
+			textView.setText("No network connection available.");
+		}
+
 	}
 	
 	@Override
@@ -128,5 +127,7 @@ public class GenresActivity extends Activity implements
 		
 		ed.clear();
 		ed.commit();
+		
+		textView.setText("No genrers selected.");
 	}
 }

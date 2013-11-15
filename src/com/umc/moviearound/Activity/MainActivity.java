@@ -1,6 +1,8 @@
 package com.umc.moviearound.Activity;
 
+import java.io.IOException;
 import java.util.List;
+import java.util.Locale;
 import java.util.Set;
 
 import org.json.JSONException;
@@ -17,6 +19,8 @@ import com.umc.moviearound.R;
 import com.umc.moviearound.Utils;
 import com.umc.moviearound.Model.Theater;
 
+import android.location.Address;
+import android.location.Geocoder;
 import android.location.Location;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
@@ -297,10 +301,18 @@ public class MainActivity extends FragmentActivity implements
 	@Override
 	public void onLocationChanged(Location location) {
 		TextView textLocation = (TextView) findViewById(R.id.textViewLocation);
-    	textLocation.setText("Você está em: " + String.valueOf(location.getLatitude() + ", " + location.getLongitude()));
 		
+    	Geocoder geoCoder = new Geocoder(this, Locale.getDefault());
+    	try {
+    	    List<Address> address = geoCoder.getFromLocation(location.getLatitude(), location.getLongitude(), 1);
+    	    String cityName = address.get(0).getLocality().toString();
+    	    
+			textLocation.setText("You are at " + cityName + ",\n" + "near " + String.valueOf(location.getLatitude() + ", " + location.getLongitude() + "."));
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
 	}
-    
+
 	public void getLocation(View v) {
 
         // If Google Play Services is available
