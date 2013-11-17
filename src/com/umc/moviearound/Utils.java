@@ -1,14 +1,15 @@
 package com.umc.moviearound;
 
+import java.util.HashSet;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Set;
 
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import com.umc.moviearound.Model.Genre;
-import com.umc.moviearound.Model.Theater;
+import com.umc.moviearound.Model.*;
 
 public class Utils {
 	
@@ -41,6 +42,28 @@ public class Utils {
 		return genres;
 	}
 	
+	public static Movie DeserializeMovie(JSONObject jsonObject) throws JSONException {
+		Movie movie = new Movie();
+		
+		movie.setId(jsonObject.getInt("MovieId"));
+		movie.setTitle(jsonObject.getString("MovieTitle"));
+		
+		return movie;
+	}
+
+	public static List<Movie> DeserializeMovieList(String jsonString) throws JSONException {
+		List<Movie> movies = new LinkedList<Movie>();
+		
+		if (jsonString.startsWith("[") || jsonString.startsWith("{")) {
+			JSONArray jsonArray = new JSONArray(jsonString.toString());
+			for (int i = 0; i < jsonArray.length(); i++) {
+				movies.add(DeserializeMovie(jsonArray.getJSONObject(i)));
+			}
+		}
+		
+		return movies;
+	}
+	
 	public static Theater DeserializeTheater(JSONObject jsonObject) throws JSONException {
 		Theater theater = new Theater();
 		
@@ -62,4 +85,5 @@ public class Utils {
 		
 		return theaters;
 	}
+
 }

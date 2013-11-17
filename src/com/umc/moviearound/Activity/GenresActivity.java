@@ -48,14 +48,12 @@ public class GenresActivity extends Activity implements
 		
 		genresSpinner.setOnItemSelectedListener(this);
 		
-		textView.setText("Loading...");
+		textView.setText(loadGenre().toString());
 		
-		//todo: carregar a lista de genêros já salvos localmente do usuário
-
 		ConnectivityManager connMgr = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
 		NetworkInfo networkInfo = connMgr.getActiveNetworkInfo();
 		if (networkInfo != null && networkInfo.isConnected()) {
-			new GetTask(this).execute("genres");
+			new GetTask(this).execute("genres");			
 		} else {
 			textView.setText("No network connection available.");
 		}
@@ -79,7 +77,7 @@ public class GenresActivity extends Activity implements
 			    ArrayAdapter spinnerArrayAdapter = new ArrayAdapter(this, android.R.layout.simple_spinner_item, genres);
 			    genresSpinner.setAdapter(spinnerArrayAdapter);				
 				
-				textView.setText("");
+				//textView.setText("");
 			}
 			else
 				textView.setText("No genres found");
@@ -110,7 +108,7 @@ public class GenresActivity extends Activity implements
 		ed.putStringSet("generos", generos);
 		ed.commit();
 		
-		Toast.makeText(this, "Genero salvo.", Toast.LENGTH_LONG).show();
+		Toast.makeText(this, "Genre saved.", Toast.LENGTH_LONG).show();
 		textView.setText(loadGenre().toString());
 	}
 	
@@ -128,6 +126,6 @@ public class GenresActivity extends Activity implements
 		ed.clear();
 		ed.commit();
 		
-		textView.setText("No genrers selected.");
+		textView.setText("No genres selected.");
 	}
 }

@@ -12,6 +12,6 @@
     <string name="empty_string"></string>
     <string name="title_activity_splash_screen">SplashScreenActivity</string>
     <string name="title_activity_movie_details">MovieDetailsActivity</string>
-    <string name="hello_world">Hello world!</string>
+    <string name="text_movies_found">Some movies that may be of your interest: </string>
 
 </resources>

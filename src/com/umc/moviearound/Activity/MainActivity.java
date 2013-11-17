@@ -1,6 +1,7 @@
 package com.umc.moviearound.Activity;
 
 import java.io.IOException;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Locale;
 import java.util.Set;
@@ -17,6 +18,7 @@ import com.umc.moviearound.AsyncTaskCompleteListener;
 import com.umc.moviearound.GetTask;
 import com.umc.moviearound.R;
 import com.umc.moviearound.Utils;
+import com.umc.moviearound.Model.Movie;
 import com.umc.moviearound.Model.Theater;
 
 import android.location.Address;
@@ -62,7 +64,7 @@ public class MainActivity extends FragmentActivity implements
 	private LocationClient mLocationClient;
 	
 	private TextView textViewMessage;
-	private ListView listViewTheaters;
+	private ListView listViewMovies;
 	
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -94,26 +96,21 @@ public class MainActivity extends FragmentActivity implements
         
         mLocationClient = new LocationClient(this, this, this);
         
-        textViewMessage = (TextView) findViewById(R.id.textViewNoMovies);
-        listViewTheaters = (ListView) findViewById(R.id.listViewTheaters);
-        
-        ConnectivityManager connMgr = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
-        NetworkInfo networkInfo = connMgr.getActiveNetworkInfo();
-        if (networkInfo != null && networkInfo.isConnected()) {
-        	//todo: pegar a lista de generos salvos e enviar como parâmetro junto com a localização
-            new GetTask(this).execute("theaters");
-        }
+        textViewMessage = (TextView) findViewById(R.id.textView2);
+        listViewMovies = (ListView) findViewById(R.id.listViewMovies);
         
     }
     
+    //This method is executed after the request do the api is completed
     @Override
 	public void onTaskComplete(String result) {
-    	List<Theater> theaters;
+    	List<Movie> movies;
 		try {
-			theaters = Utils.DeserializeTheaterList(result);
-			if (theaters.size() > 0) {
-				ArrayAdapter listArrayAdapter = new ArrayAdapter(this, android.R.layout.simple_spinner_item, theaters);
-				listViewTheaters.setAdapter(listArrayAdapter);				
+			movies = Utils.DeserializeMovieList(result);
+			if (movies.size() > 0) {
+				ArrayAdapter listArrayAdapter = new ArrayAdapter(this, android.R.layout.simple_spinner_item, movies);
+				listViewMovies.setAdapter(listArrayAdapter);	
+				textViewMessage.setText(R.string.text_movies_found);
 			}
 			else
 				textViewMessage.setText(R.string.text_no_movies);
@@ -123,11 +120,14 @@ public class MainActivity extends FragmentActivity implements
 		}
 	}
     
+    //start periodic updates to get the current location
     private void startPeriodicUpdates() {
 
         mLocationClient.requestLocationUpdates(mLocationRequest, this);
         
     }
+    
+    //stop periodic updates to get the current location
     private void stopPeriodicUpdates() {
         mLocationClient.removeLocationUpdates(this);
     }
@@ -308,11 +308,23 @@ public class MainActivity extends FragmentActivity implements
     	    String cityName = address.get(0).getLocality().toString();
     	    
 			textLocation.setText("You are at " + cityName + ",\n" + "near " + String.valueOf(location.getLatitude() + ", " + location.getLongitude() + "."));
+			
+			
+			 ConnectivityManager connMgr = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
+		        NetworkInfo networkInfo = connMgr.getActiveNetworkInfo();
+		        if (networkInfo != null && networkInfo.isConnected()) {
+		        	//call the api with the location and user's genres
+		        	String genres = loadGenre().toString().replace("[", "").replace("]", "").replace(" ", "");
+		        	String url = String.format("movies?latitude=%s&longitude=%s&genres=%s", location.getLatitude(), location.getLongitude(), genres);
+		            new GetTask(this).execute(url);
+		        }
+			
+			
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
 	}
-
+	
 	public void getLocation(View v) {
 
         // If Google Play Services is available
