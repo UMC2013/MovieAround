@@ -38,7 +38,7 @@
             android:label="@string/title_activity_genres" >
         </activity>
         <activity
-            android:name="com.umc.moviearound.MovieDetailsActivity"
+            android:name="com.umc.moviearound.Activity.MovieDetailsActivity"
             android:label="@string/title_activity_movie_details" >
         </activity>
     </application>

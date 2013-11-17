@@ -1,11 +1,16 @@
 package com.umc.moviearound.Model;
 
+import java.util.LinkedList;
+import java.util.List;
+
 public class Movie {
 
 		private int id;
 		private String title;
 		private String synopsis;
 		private String genre;
+		
+		private List<Theater> theaters = new LinkedList<Theater>();
 		
 		public int getId() {
 			return id;
@@ -34,5 +39,14 @@ public class Movie {
 		
 		public String toString() {
 			return title;
+		}
+		
+		public List<Theater> getTheaters() {
+			return theaters;
+		}
+		
+		public void addTheater(Theater theater)
+		{
+			theaters.add(theater);
 		}
 }

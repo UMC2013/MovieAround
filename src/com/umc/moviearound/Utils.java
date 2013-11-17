@@ -46,8 +46,22 @@ public class Utils {
 		Movie movie = new Movie();
 		
 		movie.setId(jsonObject.getInt("MovieId"));
-		movie.setTitle(jsonObject.getString("MovieTitle"));
+		if (jsonObject.has("MovieTitle"))
+			movie.setTitle(jsonObject.getString("MovieTitle"));
+		else if (jsonObject.has("Title"))
+			movie.setTitle(jsonObject.getString("Title"));
 		
+		if (jsonObject.has("MovieGenre"))
+			movie.setGenre(jsonObject.getString("MovieGenre"));
+		
+		if (jsonObject.has("Theaters")) {
+			JSONArray theatersArray = jsonObject.getJSONArray("Theaters");
+			for (int i = 0; i < theatersArray.length(); i++) {
+				JSONObject theaterObject = theatersArray.getJSONObject(i);
+				Theater theater = DeserializeTheater(theaterObject);
+				movie.addTheater(theater);
+			}
+		}
 		return movie;
 	}
 

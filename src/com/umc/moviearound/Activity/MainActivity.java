@@ -1,6 +1,7 @@
 package com.umc.moviearound.Activity;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Locale;
@@ -16,10 +17,10 @@ import com.google.android.gms.location.LocationListener;
 import com.google.android.gms.location.LocationRequest;
 import com.umc.moviearound.AsyncTaskCompleteListener;
 import com.umc.moviearound.GetTask;
+import com.umc.moviearound.MoviesAdapter;
 import com.umc.moviearound.R;
 import com.umc.moviearound.Utils;
 import com.umc.moviearound.Model.Movie;
-import com.umc.moviearound.Model.Theater;
 
 import android.location.Address;
 import android.location.Geocoder;
@@ -42,10 +43,12 @@ import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
+import android.widget.AdapterView.OnItemClickListener;
 
 public class MainActivity extends FragmentActivity implements
 	AsyncTaskCompleteListener<String>, 
@@ -65,6 +68,9 @@ public class MainActivity extends FragmentActivity implements
 	
 	private TextView textViewMessage;
 	private ListView listViewMovies;
+	
+	MoviesAdapter moviesAdapter;
+	List<Movie> movies;
 	
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -99,17 +105,43 @@ public class MainActivity extends FragmentActivity implements
         textViewMessage = (TextView) findViewById(R.id.textView2);
         listViewMovies = (ListView) findViewById(R.id.listViewMovies);
         
+        movies = new ArrayList<Movie>();
+        moviesAdapter = new MoviesAdapter(this, R.layout.list_item, movies);
+        
+        listViewMovies.setOnItemClickListener(new OnItemClickListener(){
+
+			@Override
+			public void onItemClick(AdapterView<?> parent, View view,
+					int position, long id) {
+				Intent intent;
+        		Bundle bundle = new Bundle();
+        		intent = new Intent(view.getContext(), MovieDetailsActivity.class);
+        		
+        		bundle.putInt("id", view.getId());
+        		intent.putExtras(bundle);
+        		startActivityForResult(intent, 0);
+			}
+		
+		});
+        
     }
     
     //This method is executed after the request do the api is completed
     @Override
 	public void onTaskComplete(String result) {
-    	List<Movie> movies;
 		try {
-			movies = Utils.DeserializeMovieList(result);
-			if (movies.size() > 0) {
-				ArrayAdapter listArrayAdapter = new ArrayAdapter(this, android.R.layout.simple_spinner_item, movies);
-				listViewMovies.setAdapter(listArrayAdapter);	
+			List<Movie> moviesList;
+			movies.clear();
+			moviesList = Utils.DeserializeMovieList(result);
+			if (moviesList.size() > 0) {
+				//ArrayAdapter listArrayAdapter = new ArrayAdapter(this, android.R.layout.simple_spinner_item, movies);
+				//listViewMovies.setAdapter(listArrayAdapter);
+				for(Movie m : moviesList) {
+					movies.add(m);
+				}
+				listViewMovies.setAdapter(moviesAdapter);
+				
+				moviesAdapter.notifyDataSetChanged();
 				textViewMessage.setText(R.string.text_movies_found);
 			}
 			else
