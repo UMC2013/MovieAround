@@ -22,7 +22,7 @@
         android:layout_height="wrap_content"
         android:layout_below="@id/textMovieTitle"
         android:layout_marginTop="20sp"
-        android:text="86-year-old Irving Zisman takes a trip from Nebraska to North Carolina to take his 8 year-old grandson, Billy, back to his real father." />
+        android:text="Aqui vai a sinopse." />
 
     <TextView
         android:id="@+id/textMovieGenres"
