@@ -1,9 +1,7 @@
 package com.umc.moviearound;
 
-import java.util.HashSet;
 import java.util.LinkedList;
 import java.util.List;
-import java.util.Set;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -17,8 +15,8 @@ public class Utils {
 		Genre genre = new Genre();
 		
 		try {
-		genre.setId(jsonObject.getInt("GenreId"));
-		genre.setName(jsonObject.getString("Name"));
+			genre.setId(jsonObject.getInt("GenreId"));
+			genre.setName(jsonObject.getString("Name"));
 		}
 		catch (JSONException e) {
 			return null;
@@ -46,13 +44,23 @@ public class Utils {
 		Movie movie = new Movie();
 		
 		movie.setId(jsonObject.getInt("MovieId"));
+		
 		if (jsonObject.has("MovieTitle"))
 			movie.setTitle(jsonObject.getString("MovieTitle"));
 		else if (jsonObject.has("Title"))
 			movie.setTitle(jsonObject.getString("Title"));
 		
-		if (jsonObject.has("MovieGenre"))
-			movie.setGenre(jsonObject.getString("MovieGenre"));
+		if (jsonObject.has("Synopsis"))
+			movie.setSynopsis(jsonObject.getString("Synopsis"));
+		
+		if (jsonObject.has("Genres")) {
+			List<Genre> generos = DeserializeGenreList(jsonObject.getString("Genres"));
+			movie.setGenre(generos.get(0).toString());
+			
+//			movie.setGenre(jsonObject.getString("Genres"));
+//			movie.setGenre(genre.getName());
+//			Toast.makeText(null, genre.toString(), Toast.LENGTH_SHORT).show();
+		}
 		
 		if (jsonObject.has("Theaters")) {
 			JSONArray theatersArray = jsonObject.getJSONArray("Theaters");
@@ -62,6 +70,7 @@ public class Utils {
 				movie.addTheater(theater);
 			}
 		}
+		
 		return movie;
 	}
 
