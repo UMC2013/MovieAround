@@ -317,7 +317,7 @@ public class MainActivity extends FragmentActivity implements
 	@Override
 	public void onConnected(Bundle arg0) {
 		// TODO Auto-generated method stub
-		 Toast.makeText(this, "Connected", Toast.LENGTH_SHORT).show();
+		 Toast.makeText(this, "Searching for your location, please wait...", Toast.LENGTH_SHORT).show();
 		 
 		 startPeriodicUpdates();
 	}
