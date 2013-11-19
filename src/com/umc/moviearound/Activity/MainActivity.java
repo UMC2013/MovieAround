@@ -1,3 +1,14 @@
+/**
+ * DEVELOPED BY: 
+ * 		IGOR KLAFKE
+ * 		PAULO GRABIN
+ * 		RONALD FLORES
+ * 
+ * UBIQUITOUS AND MOBILE COMPUTING - 2013/2
+ * CRISTIANO ANDRE DA COSTA
+ * UNISINOS
+ */
+
 package com.umc.moviearound.Activity;
 
 import java.util.ArrayList;
@@ -317,7 +328,7 @@ public class MainActivity extends FragmentActivity implements
 	@Override
 	public void onConnected(Bundle arg0) {
 		// TODO Auto-generated method stub
-		 Toast.makeText(this, "Connected", Toast.LENGTH_SHORT).show();
+		 Toast.makeText(this, "Searching for your location, please wait...", Toast.LENGTH_SHORT).show();
 		 
 		 startPeriodicUpdates();
 	}
