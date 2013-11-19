@@ -62,8 +62,8 @@ AsyncTaskCompleteListener<String> {
 			Movie movie = Utils.DeserializeMovie(new JSONObject(result));
 			if (movie != null) {
 				textName.setText(movie.getTitle());
-				textSynopsis.setText("SINOPSE: " + movie.getSynopsis());
-				textGenres.setText("GÊNERO: " + movie.getGenre());
+				textSynopsis.setText("SYNOPSIS: " + movie.getSynopsis());
+				textGenres.setText("GENRES: " + movie.getGenre());
 			}
 		} catch (JSONException e) {
 			// TODO Auto-generated catch block

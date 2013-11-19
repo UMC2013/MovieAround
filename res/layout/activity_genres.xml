@@ -31,7 +31,7 @@
         android:layout_alignBaseline="@+id/buttonAddGenre"
         android:layout_alignBottom="@+id/buttonAddGenre"
         android:layout_toRightOf="@+id/buttonAddGenre"
-        android:onClick="cleanGenresList"
+        android:onClick="cleanGenres"
         android:text="@string/button_clean_list" />
 
     <TextView

@@ -13,7 +13,7 @@ public class MovieAroundApi {
 
 	public String getJson(String url) throws IOException {
 		String json = "";
-		Log.i("MovieAround", _baseURL + url);
+		Log.e("MovieAround", _baseURL + url);
 		
 		json = readJson(_baseURL + url);
 		
@@ -32,7 +32,7 @@ public class MovieAroundApi {
 			}
 			content.close();
 			
-			Log.i("MovieAround", builder.toString());
+//			Log.i("MovieAround", builder.toString());
 			return builder.toString();
 		}
 

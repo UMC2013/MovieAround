@@ -1,8 +1,6 @@
 package com.umc.moviearound.Activity;
 
-import java.io.IOException;
 import java.util.ArrayList;
-import java.util.HashSet;
 import java.util.List;
 import java.util.Locale;
 import java.util.Set;
@@ -44,7 +42,6 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
 import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -68,6 +65,7 @@ public class MainActivity extends FragmentActivity implements
 	
 	private TextView textViewMessage;
 	private ListView listViewMovies;
+	public static final String SharedPref_GENRES = "genres";
 	
 	MoviesAdapter moviesAdapter;
 	List<Movie> movies;
@@ -146,6 +144,8 @@ public class MainActivity extends FragmentActivity implements
 			}
 			else
 				textViewMessage.setText(R.string.text_no_movies);
+			
+//			stopPeriodicUpdates();
 		} catch (JSONException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -374,7 +374,7 @@ public class MainActivity extends FragmentActivity implements
 	
 	public Set<String> loadGenre() {
 		SharedPreferences prefs = getSharedPreferences("preferences", Context.MODE_PRIVATE);
-		Set<String> generos = prefs.getStringSet("generos", null);
+		Set<String> generos = prefs.getStringSet(SharedPref_GENRES, null);
 		
 		if(generos != null)
 			return generos;
