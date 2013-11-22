@@ -384,13 +384,23 @@ public class MainActivity extends FragmentActivity implements
     }
 	
 	public Set<String> loadGenre() {
-		SharedPreferences prefs = getSharedPreferences("preferences", Context.MODE_PRIVATE);
+		SharedPreferences prefs = getSharedPreferences("preferences",
+				Context.MODE_PRIVATE);
 		Set<String> generos = prefs.getStringSet(SharedPref_GENRES, null);
-		
-		if(generos != null)
-			return generos;
-		else
+
+		if (generos != null) {
+
+			if (generos.size() > 0) {
+				Log.i(GenresActivity.TAG, "Tela inicial - Retornando " + generos.size());
+				return generos;
+			} else {
+				Log.i(GenresActivity.TAG, "Tela inicial - Retornando 0");
+				return null;
+			}
+		} else {
+			Log.i(GenresActivity.TAG, "Tela inicial - Retornando null");
 			return null;
+		}
 	}
 	
 }
